@@ -12,11 +12,25 @@ using namespace std;
 bool checkIfDupl(int elf1min, int elf1max, int elf2min, int elf2max)
 {
   bool result = false;
-  if (elf2min >= elf1min && elf2max <= elf1max)
+  if ((elf2min >= elf1min) && (elf2max <= elf1max))
   {
     result = true;
   }
-  else if (elf1min >= elf2min && elf1max <= elf2max)
+  else if ((elf1min >= elf2min) && (elf1max <= elf2max))
+  {
+    result = true;
+  }
+  return result;
+}
+
+bool checkIfOverlap(int elf1min, int elf1max, int elf2min, int elf2max)
+{
+  bool result = false;
+  if((elf2min >= elf1min) && (elf2min <= elf1max))
+  {
+    result = true;
+  }
+  else if ((elf1min >= elf2min) && (elf1min <= elf2max))
   {
     result = true;
   }
@@ -31,7 +45,8 @@ void main()
   string line;
   inputFile.open(inputFileName, std::ios::out);
   vector<char> result;
-  int counter = 0;
+  int counterDuplicate = 0;
+  int counterOverlap = 0;
   int posComma = 0;
   int pos1min = 0;
   int elf1min, elf2min, elf1max, elf2max;
@@ -54,12 +69,18 @@ void main()
     elf2min = stoi(secondElf.substr(0, pos2min));
     elf2max = stoi(secondElf.substr(pos2min + 1, secondElf.length()));
     const bool isDuplicate = checkIfDupl(elf1min, elf1max, elf2min, elf2max);
+    const bool isOverlap = checkIfOverlap(elf1min, elf1max, elf2min, elf2max);
     // Check if contained in other
     if (isDuplicate)
     {
       //Increment counter
-      ++counter;
+      ++counterDuplicate;
+    }
+    if (isOverlap)
+    {
+      //Increment counter
+      ++counterOverlap;
     }
   }
-  cout << counter;
+  cout << counterDuplicate << " " << counterOverlap;
 }
